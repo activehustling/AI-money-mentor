@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="script.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Money Mentor</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to AI Money Mentor!</h1>
+        <p>Ask me anything about making money online.</p>
+        <input type="text" id="question" placeholder="Type your question...">
+        <button onclick="askQuestion()">Ask</button>
+        <p id="response"></p>
+    </div>
+<button id="ask-btn">Ask</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Expands the app to full screen
+
+        function askQuestion() {
+            let question = document.getElementById("question").value;
+            if (question === "") {
+                alert("Please enter a question!");
+                return;
+            }
+
+            // Call the backend (server) to get a response
+            fetch("https://telegram-backend-l1fx.onrender.com/ask?question=" + encodeURIComponent(question))
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("response").innerText = "AI Mentor: " + data.answer;
+                })
+                .catch(error => {
+                    document.getElementById("response").innerText = "Error: Could not get an answer.";
+                });
+        }
+    </script>
+</body>
+</html>
